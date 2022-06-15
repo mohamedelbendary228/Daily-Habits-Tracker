@@ -4,6 +4,7 @@ import 'package:habit_tracker_flutter/constants/app_assets.dart';
 import 'package:habit_tracker_flutter/constants/app_colors.dart';
 import 'package:habit_tracker_flutter/models/task.dart';
 import 'package:habit_tracker_flutter/persistence/hive_data_store.dart';
+import 'package:habit_tracker_flutter/provider/providers.dart';
 import 'package:habit_tracker_flutter/ui/home/home_page.dart';
 import 'package:habit_tracker_flutter/ui/theming/app_theme.dart';
 
@@ -23,7 +24,11 @@ Future<void> main() async {
       Task.create(name: 'Sleep 8 Hours', iconName: AppAssets.rest),
     ],
   );
-  runApp(MyApp());
+  runApp(
+    ProviderScope(  
+        overrides: [dataStoreProvider.overrideWithValue(dataStore)],
+        child: MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
