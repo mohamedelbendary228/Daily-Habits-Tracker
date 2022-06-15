@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
 
 part 'task.g.dart';
 
@@ -16,4 +17,9 @@ class Task {
     required this.name,
     required this.iconName,
   });
+
+  factory Task.create({required String name, required String iconName}) {
+    final id = Uuid().v1();
+    return Task(id: id, name: name, iconName: iconName);
+  }
 }

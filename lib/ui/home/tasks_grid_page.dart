@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:habit_tracker_flutter/models/task.dart';
 import 'package:habit_tracker_flutter/models/task_preset.dart';
 import 'package:habit_tracker_flutter/ui/home/tasks_grid.dart';
 
 class TasksGridPage extends StatelessWidget {
-  final List<TaskPreset> tasks;
+  final List<Task> tasks;
   const TasksGridPage({Key? key, required this.tasks}) : super(key: key);
 
   @override
@@ -13,7 +14,7 @@ class TasksGridPage extends StatelessWidget {
 }
 
 class TasksGridContent extends StatelessWidget {
-  final List<TaskPreset> tasks;
+  final List<Task> tasks;
   const TasksGridContent({Key? key, required this.tasks}) : super(key: key);
 
   @override
