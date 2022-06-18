@@ -6,7 +6,14 @@ import 'package:habit_tracker_flutter/ui/theming/app_theme.dart';
 
 class AnimatedTaskRing extends StatefulWidget {
   final String iconName;
-  const AnimatedTaskRing({Key? key, required this.iconName}) : super(key: key);
+  final bool completed;
+  final ValueChanged<bool>? onCompleted;
+  const AnimatedTaskRing({
+    Key? key,
+    required this.iconName,
+    required this.completed,
+    this.onCompleted,
+  }) : super(key: key);
 
   @override
   State<AnimatedTaskRing> createState() => _AnimatedTaskRingState();
@@ -21,7 +28,7 @@ class _AnimatedTaskRingState extends State<AnimatedTaskRing>
   void initState() {
     super.initState();
     _animationController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 1000));
+        vsync: this, duration: Duration(milliseconds: 900));
 
     _animationController.addStatusListener(_checkStatusUpdates);
 
@@ -39,6 +46,7 @@ class _AnimatedTaskRingState extends State<AnimatedTaskRing>
 
   void _checkStatusUpdates(AnimationStatus status) {
     if (status == AnimationStatus.completed) {
+      widget.onCompleted?.call(true);
       if (mounted) {
         setState(() => _showCheckIcon = true);
       }
@@ -51,9 +59,10 @@ class _AnimatedTaskRingState extends State<AnimatedTaskRing>
   }
 
   void _handleTapDown(TapDownDetails details) {
-    if (_animationController.status != AnimationStatus.completed) {
+    if (!widget.completed && _animationController.status != AnimationStatus.completed) {
       _animationController.forward();
     } else if (!_showCheckIcon) {
+      widget.onCompleted?.call(false);
       _animationController.value = 0.0;
     }
   }
@@ -74,7 +83,7 @@ class _AnimatedTaskRingState extends State<AnimatedTaskRing>
           animation: _curveAnimation,
           builder: (context, child) {
             final themeData = AppTheme.of(context);
-            final progress = _curveAnimation.value;
+            final progress = widget.completed? 1.0 : _curveAnimation.value;
             final hasCompleted = progress == 1.0;
             final iconColor =
                 hasCompleted ? themeData.accentNegative : themeData.taskIcon;
