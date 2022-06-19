@@ -15,17 +15,25 @@ Future<void> main() async {
   await dataStore.init();
   await dataStore.createDemoTasks(
     force: false,
-    tasks: [
-      Task.create(name: 'Cycle to work', iconName: AppAssets.bike),
+    frontTasks: [
+      Task.create(name: 'Eat a Healthy Meal', iconName: AppAssets.carrot),
       Task.create(name: 'Walk the Dog', iconName: AppAssets.dog),
       Task.create(name: 'Do Some Coding', iconName: AppAssets.html),
       Task.create(name: 'Meditate', iconName: AppAssets.meditation),
       Task.create(name: 'Do 10 Pushups', iconName: AppAssets.pushups),
       Task.create(name: 'Sleep 8 Hours', iconName: AppAssets.rest),
     ],
+    backTasks: [
+      Task.create(name: 'Cycle to Work', iconName: AppAssets.bike),
+      Task.create(name: 'Wash Your Hands', iconName: AppAssets.washHands),
+      Task.create(name: 'Wear a Mask', iconName: AppAssets.mask),
+      Task.create(name: 'Brush Your Teeth', iconName: AppAssets.toothbrush),
+      Task.create(name: 'Floss Your Teeth', iconName: AppAssets.dentalFloss),
+      Task.create(name: 'Drink Water', iconName: AppAssets.water),
+    ],
   );
   runApp(
-    ProviderScope(  
+    ProviderScope(
         overrides: [dataStoreProvider.overrideWithValue(dataStore)],
         child: MyApp()),
   );
@@ -39,6 +47,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Helvetica Neue',
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,
       ),
       home: AppTheme(
         data: AppThemeData.defaultWithSwatch(AppColors.red),

@@ -4,7 +4,9 @@ import 'package:habit_tracker_flutter/models/task_state.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class HiveDataStore {
-  static const tasksBoxName = 'task';
+  static const forntTasksBoxName = 'frontTasks';
+  static const backTasksBoxName = 'backTasks';
+
   static const taskStateBoxName = 'tasksState';
   static String taskStateKey(String key) => 'taskState/$key';
 
@@ -14,21 +16,35 @@ class HiveDataStore {
     Hive.registerAdapter<Task>(TaskAdapter());
     Hive.registerAdapter<TaskState>(TaskStateAdapter());
     //open boxes
-    await Hive.openBox<Task>(tasksBoxName);
+    await Hive.openBox<Task>(forntTasksBoxName);
+    await Hive.openBox<Task>(backTasksBoxName);
     await Hive.openBox<TaskState>(taskStateBoxName);
   }
 
-  Future<void> createDemoTasks(
-      {required List<Task> tasks, bool force = false}) async {
-    final box = Hive.box<Task>(tasksBoxName);
-    if (box.isEmpty || force) {
-      await box.clear();
-      await box.addAll(tasks);
+  Future<void> createDemoTasks({
+    required List<Task> frontTasks,
+    required List<Task> backTasks,
+    bool force = false,
+  }) async {
+    final frontBox = Hive.box<Task>(forntTasksBoxName);
+    if (frontBox.isEmpty || force) {
+      await frontBox.clear();
+      await frontBox.addAll(frontTasks);
+    }
+
+    final backBox = Hive.box<Task>(backTasksBoxName);
+    if (backBox.isEmpty || force) {
+      await backBox.clear();
+      await backBox.addAll(frontTasks);
     }
   }
 
-  ValueListenable<Box<Task>> taskListenable() {
-    return Hive.box<Task>(tasksBoxName).listenable();
+  ValueListenable<Box<Task>> frontTasksListenable() {
+    return Hive.box<Task>(forntTasksBoxName).listenable();
+  }
+
+  ValueListenable<Box<Task>> backTasksListenable() {
+    return Hive.box<Task>(backTasksBoxName).listenable();
   }
 
   Future<void> setTaskState({
