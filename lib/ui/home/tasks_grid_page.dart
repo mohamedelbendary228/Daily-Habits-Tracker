@@ -3,6 +3,7 @@ import 'package:habit_tracker_flutter/models/task.dart';
 import 'package:habit_tracker_flutter/models/task_preset.dart';
 import 'package:habit_tracker_flutter/ui/home/home_page_bottom_options.dart';
 import 'package:habit_tracker_flutter/ui/home/tasks_grid.dart';
+import 'package:habit_tracker_flutter/ui/theming/app_theme.dart';
 
 class TasksGridPage extends StatelessWidget {
   final List<Task> tasks;
@@ -15,7 +16,9 @@ class TasksGridPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: TasksGridContent(tasks: tasks, onFlip: onFlip));
+    return Scaffold(
+        backgroundColor: AppTheme.of(context).primary,
+        body: SafeArea(child: TasksGridContent(tasks: tasks, onFlip: onFlip)));
   }
 }
 

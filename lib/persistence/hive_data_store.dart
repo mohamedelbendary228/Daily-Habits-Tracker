@@ -35,7 +35,7 @@ class HiveDataStore {
     final backBox = Hive.box<Task>(backTasksBoxName);
     if (backBox.isEmpty || force) {
       await backBox.clear();
-      await backBox.addAll(frontTasks);
+      await backBox.addAll(backTasks);
     }
   }
 
