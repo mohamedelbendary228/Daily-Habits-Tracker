@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:habit_tracker_flutter/models/app_theme_settings.dart';
+import 'package:habit_tracker_flutter/models/front_or_back_side.dart';
 import 'package:habit_tracker_flutter/models/task.dart';
 import 'package:habit_tracker_flutter/models/task_state.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -6,8 +8,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 class HiveDataStore {
   static const forntTasksBoxName = 'frontTasks';
   static const backTasksBoxName = 'backTasks';
-
   static const taskStateBoxName = 'tasksState';
+  static const frontAppThemeBoxName = 'frontAppTheme';
+  static const backAppThemeBoxName = 'backAppTheme';
   static String taskStateKey(String key) => 'taskState/$key';
 
   Future<void> init() async {
@@ -65,5 +68,25 @@ class HiveDataStore {
   TaskState taskState(Box<TaskState> box, {required Task task}) {
     final key = taskStateKey(task.id);
     return box.get(key) ?? TaskState(taskId: task.id, completed: false);
+  }
+
+  Future<void> setAppThemeSettings(
+      {required AppThemeSettings settings,
+      required FrontOrBackSide side}) async {
+    final themeKey = side == FrontOrBackSide.front
+        ? frontAppThemeBoxName
+        : backAppThemeBoxName;
+    final box = Hive.box<AppThemeSettings>(themeKey);
+    await box.put(themeKey, settings);
+  }
+
+  Future<AppThemeSettings> appThemeSettings(
+      {required FrontOrBackSide side}) async {
+    final themeKey = side == FrontOrBackSide.front
+        ? frontAppThemeBoxName
+        : backAppThemeBoxName;
+    final box = Hive.box<AppThemeSettings>(themeKey);
+    final settings = box.get(themeKey);
+    return settings ?? AppThemeSettings.defaults(side);
   }
 }

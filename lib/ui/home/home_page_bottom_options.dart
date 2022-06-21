@@ -17,6 +17,7 @@ class HomePageBottomOptions extends StatelessWidget {
             color: AppTheme.of(context).settingsLabel,
           ),
         ),
+        
       ],
     );
   }

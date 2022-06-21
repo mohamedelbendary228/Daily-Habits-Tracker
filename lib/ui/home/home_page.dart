@@ -4,7 +4,6 @@ import 'package:habit_tracker_flutter/models/task.dart';
 import 'package:habit_tracker_flutter/provider/providers.dart';
 import 'package:habit_tracker_flutter/ui/home/page_flip_builder.dart';
 import 'package:habit_tracker_flutter/ui/home/tasks_grid_page.dart';
-import 'package:habit_tracker_flutter/ui/theming/app_theme.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class HomePage extends StatefulWidget {
