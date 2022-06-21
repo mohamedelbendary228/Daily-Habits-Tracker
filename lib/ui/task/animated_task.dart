@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:habit_tracker_flutter/constants/app_assets.dart';
+import 'package:habit_tracker_flutter/ui/animations/animation_controller_state.dart';
 import 'package:habit_tracker_flutter/ui/common_widgets/centered_svg_icon.dart';
 import 'package:habit_tracker_flutter/ui/task/task_completion_ring.dart';
 import 'package:habit_tracker_flutter/ui/theming/app_theme.dart';
@@ -16,31 +17,30 @@ class AnimatedTaskRing extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<AnimatedTaskRing> createState() => _AnimatedTaskRingState();
+  State<AnimatedTaskRing> createState() =>
+      _AnimatedTaskRingState(Duration(milliseconds: 900));
 }
 
-class _AnimatedTaskRingState extends State<AnimatedTaskRing>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _animationController;
+class _AnimatedTaskRingState
+    extends AnimationControllerState<AnimatedTaskRing> {
+  _AnimatedTaskRingState(Duration duration) : super(duration);
+
   late final Animation<double> _curveAnimation;
   bool _showCheckIcon = false;
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 900));
+    animationController.addStatusListener(_checkStatusUpdates);
 
-    _animationController.addStatusListener(_checkStatusUpdates);
-
-    _curveAnimation = _animationController.drive(
+    _curveAnimation = animationController.drive(
       CurveTween(curve: Curves.easeInOut),
     );
   }
 
   @override
   void dispose() {
-    _animationController.removeStatusListener(_checkStatusUpdates);
-    _animationController.dispose();
+    animationController.removeStatusListener(_checkStatusUpdates);
+    animationController.dispose();
     super.dispose();
   }
 
@@ -59,17 +59,18 @@ class _AnimatedTaskRingState extends State<AnimatedTaskRing>
   }
 
   void _handleTapDown(TapDownDetails details) {
-    if (!widget.completed && _animationController.status != AnimationStatus.completed) {
-      _animationController.forward();
+    if (!widget.completed &&
+        animationController.status != AnimationStatus.completed) {
+      animationController.forward();
     } else if (!_showCheckIcon) {
       widget.onCompleted?.call(false);
-      _animationController.value = 0.0;
+      animationController.value = 0.0;
     }
   }
 
   void _handleTapCancel() {
-    if (_animationController.status != AnimationStatus.completed) {
-      _animationController.reverse();
+    if (animationController.status != AnimationStatus.completed) {
+      animationController.reverse();
     }
   }
 
@@ -83,7 +84,7 @@ class _AnimatedTaskRingState extends State<AnimatedTaskRing>
           animation: _curveAnimation,
           builder: (context, child) {
             final themeData = AppTheme.of(context);
-            final progress = widget.completed? 1.0 : _curveAnimation.value;
+            final progress = widget.completed ? 1.0 : _curveAnimation.value;
             final hasCompleted = progress == 1.0;
             final iconColor =
                 hasCompleted ? themeData.accentNegative : themeData.taskIcon;
