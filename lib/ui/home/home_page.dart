@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:habit_tracker_flutter/models/app_theme_settings.dart';
 import 'package:habit_tracker_flutter/models/task.dart';
 import 'package:habit_tracker_flutter/provider/providers.dart';
 import 'package:habit_tracker_flutter/ui/home/page_flip_builder.dart';
@@ -28,6 +29,8 @@ class _HomePageState extends State<HomePage> {
     return Consumer(
       builder: (_, ref, __) {
         final datastore = ref.watch(dataStoreProvider);
+        final frontAppThemeProvider = ref.watch(frontThemeManagerProvider);
+        final backAppThemeProvider = ref.watch(backThemeManagerProvider);
         return PageFlipBuilder(
           key: _pageFlipKey,
           frontBuilder: (_) => ValueListenableBuilder(
@@ -35,6 +38,13 @@ class _HomePageState extends State<HomePage> {
             builder: (_, Box<Task> box, __) {
               return TasksGridPage(
                 key: ValueKey(1),
+                appThemeSettings: frontAppThemeProvider,
+                onColorIndexSelected: (colorIndex) => ref
+                    .read(frontThemeManagerProvider.notifier)
+                    .updateColorIndex(colorIndex),
+                onVariantIndexSelected: (variantIndex) => ref
+                    .read(frontThemeManagerProvider.notifier)
+                    .updateVariantIndex(variantIndex),
                 leftAnimatorKey: _frontSlidingPanelLeftAnimatorKey,
                 rightAnimatorKey: _frontSlidingPanelRightAnimatorKey,
                 tasks: box.values.toList(),
@@ -47,6 +57,13 @@ class _HomePageState extends State<HomePage> {
             builder: (_, Box<Task> box, __) {
               return TasksGridPage(
                 key: ValueKey(2),
+                appThemeSettings: backAppThemeProvider,
+                onColorIndexSelected: (colorIndex) => ref
+                    .read(backThemeManagerProvider.notifier)
+                    .updateColorIndex(colorIndex),
+                onVariantIndexSelected: (variantIndex) => ref
+                    .read(backThemeManagerProvider.notifier)
+                    .updateVariantIndex(variantIndex),
                 leftAnimatorKey: _backSlidingPanelLeftAnimatorKey,
                 rightAnimatorKey: _backSlidingPanelRightAnimatorKey,
                 tasks: box.values.toList(),

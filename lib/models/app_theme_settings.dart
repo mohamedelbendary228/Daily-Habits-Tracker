@@ -7,14 +7,7 @@ part 'app_theme_settings.g.dart';
 
 @HiveType(typeId: 2)
 class AppThemeSettings {
-  AppThemeSettings({required this.colorIndex, required this.variantIndex});
-  factory AppThemeSettings.defaults(FrontOrBackSide side) {
-    return AppThemeSettings(
-      colorIndex: 0,
-      variantIndex: side == FrontOrBackSide.front ? 0 : 2,
-    );
-  }
-  // Index used to reference one of the colors in AppColors
+// Index used to reference one of the colors in AppColors
   // Can range between 0 and AppColors.allColors.length - 1
   @HiveField(0)
   final int colorIndex;
@@ -23,6 +16,15 @@ class AppThemeSettings {
   // Can range between 0 and 2
   @HiveField(1)
   final int variantIndex;
+
+  AppThemeSettings({required this.colorIndex, required this.variantIndex});
+  
+  factory AppThemeSettings.defaults(FrontOrBackSide side) {
+    return AppThemeSettings(
+      colorIndex: 0,
+      variantIndex: side == FrontOrBackSide.front ? 0 : 2,
+    );
+  }
 
   AppThemeSettings copyWith({
     int? colorIndex,

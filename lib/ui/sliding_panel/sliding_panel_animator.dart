@@ -35,10 +35,11 @@ class SlidingPanelAnimatorState
   }
 
   double _getOffsetX(double screenWidth, double animationValue) {
-    final startOffest = widget.direction == SlideDirection.rightToLeft
+    final startOffset = widget.direction == SlideDirection.rightToLeft
         ? screenWidth - SlidingPanel.leftPanelFixedWidth
         : -SlidingPanel.leftPanelFixedWidth;
-    return startOffest * (1.0 - animationValue);
+    print('Start Offset $startOffset');
+    return startOffset * (1.0 - animationValue);
   }
 
   @override
