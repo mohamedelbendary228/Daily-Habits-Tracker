@@ -18,6 +18,8 @@ class HiveDataStore {
     //register adapters
     Hive.registerAdapter<Task>(TaskAdapter());
     Hive.registerAdapter<TaskState>(TaskStateAdapter());
+    Hive.registerAdapter<AppThemeSettingsModel>(AppThemeSettingsModelAdapter());
+    
     //open boxes
     await Hive.openBox<Task>(forntTasksBoxName);
     await Hive.openBox<Task>(backTasksBoxName);
