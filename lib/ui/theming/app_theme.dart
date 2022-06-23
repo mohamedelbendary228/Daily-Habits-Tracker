@@ -32,24 +32,6 @@ class AppThemeData {
     required this.inactiveThemePanelRing,
     required this.overlayStyle,
   });
-
-  factory AppThemeData.defaultWithSwatch(List<Color> swatch) {
-    return AppThemeData(
-      primary: swatch[0],
-      secondary: swatch[0],
-      accent: AppColors.white,
-      accentNegative: AppColors.black,
-      taskRing: swatch[4],
-      taskIcon: AppColors.white,
-      settingsText: AppColors.white,
-      settingsLabel: AppColors.white60,
-      settingsCta: swatch[3],
-      settingsListIconBackground: swatch[2],
-      settingsInactiveIconBackground: swatch[2],
-      inactiveThemePanelRing: AppColors.grey,
-      overlayStyle: SystemUiOverlayStyle.light,
-    );
-  }
 }
 
 // Class for reading AppThemeData via InheritedWidget

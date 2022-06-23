@@ -73,10 +73,7 @@ class MyApp extends StatelessWidget {
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
       ),
-      home: AppTheme(
-        data: AppThemeData.defaultWithSwatch(AppColors.red),
-        child: HomePage(),
-      ),
+      home: HomePage(),
     );
   }
 }
