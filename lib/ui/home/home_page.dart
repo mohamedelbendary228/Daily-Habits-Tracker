@@ -29,8 +29,8 @@ class _HomePageState extends State<HomePage> {
     return Consumer(
       builder: (_, ref, __) {
         final datastore = ref.watch(dataStoreProvider);
-        final frontAppThemeProvider = ref.watch(frontThemeManagerProvider);
-        final backAppThemeProvider = ref.watch(backThemeManagerProvider);
+        final frontProvider = ref.watch(frontThemeManagerProvider);
+        final backProvider = ref.watch(backThemeManagerProvider);
         return PageFlipBuilder(
           key: _pageFlipKey,
           frontBuilder: (_) => ValueListenableBuilder(
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
             builder: (_, Box<Task> box, __) {
               return TasksGridPage(
                 key: ValueKey(1),
-                appThemeSettings: frontAppThemeProvider,
+                appThemeSettings: frontProvider,
                 onColorIndexSelected: (colorIndex) => ref
                     .read(frontThemeManagerProvider.notifier)
                     .updateColorIndex(colorIndex),
@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
             builder: (_, Box<Task> box, __) {
               return TasksGridPage(
                 key: ValueKey(2),
-                appThemeSettings: backAppThemeProvider,
+                appThemeSettings: backProvider,
                 onColorIndexSelected: (colorIndex) => ref
                     .read(backThemeManagerProvider.notifier)
                     .updateColorIndex(colorIndex),

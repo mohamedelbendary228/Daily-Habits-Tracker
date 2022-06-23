@@ -22,6 +22,8 @@ class HiveDataStore {
     await Hive.openBox<Task>(forntTasksBoxName);
     await Hive.openBox<Task>(backTasksBoxName);
     await Hive.openBox<TaskState>(taskStateBoxName);
+    await Hive.openBox<AppThemeSettingsModel>(frontAppThemeBoxName);
+    await Hive.openBox<AppThemeSettingsModel>(backAppThemeBoxName);
   }
 
   Future<void> createDemoTasks({
@@ -71,22 +73,22 @@ class HiveDataStore {
   }
 
   Future<void> setAppThemeSettings(
-      {required AppThemeSettings settings,
+      {required AppThemeSettingsModel settings,
       required FrontOrBackSide side}) async {
     final themeKey = side == FrontOrBackSide.front
         ? frontAppThemeBoxName
         : backAppThemeBoxName;
-    final box = Hive.box<AppThemeSettings>(themeKey);
+    final box = Hive.box<AppThemeSettingsModel>(themeKey);
     await box.put(themeKey, settings);
   }
 
-  Future<AppThemeSettings> appThemeSettings(
+  Future<AppThemeSettingsModel> appThemeSettings(
       {required FrontOrBackSide side}) async {
     final themeKey = side == FrontOrBackSide.front
         ? frontAppThemeBoxName
         : backAppThemeBoxName;
-    final box = Hive.box<AppThemeSettings>(themeKey);
+    final box = Hive.box<AppThemeSettingsModel>(themeKey);
     final settings = box.get(themeKey);
-    return settings ?? AppThemeSettings.defaults(side);
+    return settings ?? AppThemeSettingsModel.defaults(side);
   }
 }

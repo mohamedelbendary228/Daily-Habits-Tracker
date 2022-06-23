@@ -14,7 +14,7 @@ class TasksGridPage extends StatelessWidget {
   final VoidCallback? onFlip;
   final GlobalKey<SlidingPanelAnimatorState> leftAnimatorKey;
   final GlobalKey<SlidingPanelAnimatorState> rightAnimatorKey;
-  final AppThemeSettings appThemeSettings;
+  final AppThemeSettingsModel appThemeSettings;
   final ValueChanged<int>? onColorIndexSelected;
   final ValueChanged<int>? onVariantIndexSelected;
 
@@ -70,7 +70,7 @@ class TasksGridPage extends StatelessWidget {
                 key: rightAnimatorKey,
                 direction: SlideDirection.rightToLeft,
                 child: ThemeSelectionList(
-                  currentThemeSettings: appThemeSettings,
+                  currentThemeSettingsModel: appThemeSettings,
                   onColorIndexSelected: onColorIndexSelected,
                   onVariantIndexSelected: onVariantIndexSelected,
                   availableWidth: MediaQuery.of(context).size.width -

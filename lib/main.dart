@@ -14,10 +14,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppAssets.preloadSVGs();
   final dataStore = HiveDataStore();
-  final frontThemeSettings =
-      await dataStore.appThemeSettings(side: FrontOrBackSide.front);
-  final backThemeSettings =
-      await dataStore.appThemeSettings(side: FrontOrBackSide.back);
   await dataStore.init();
   await dataStore.createDemoTasks(
     force: false,
@@ -37,7 +33,11 @@ Future<void> main() async {
       Task.create(name: 'Floss Your Teeth', iconName: AppAssets.dentalFloss),
       Task.create(name: 'Drink Water', iconName: AppAssets.water),
     ],
-  );
+   );
+   final frontThemeSettings =
+      await dataStore.appThemeSettings(side: FrontOrBackSide.front);
+  final backThemeSettings =
+      await dataStore.appThemeSettings(side: FrontOrBackSide.back);
 
   runApp(
     ProviderScope(
@@ -45,13 +45,13 @@ Future<void> main() async {
         dataStoreProvider.overrideWithValue(dataStore),
         frontThemeManagerProvider.overrideWithValue(
           AppThemeManager(
-              themeSettings: frontThemeSettings,
+              state: frontThemeSettings,
               dataStore: dataStore,
               side: FrontOrBackSide.front),
         ),
         backThemeManagerProvider.overrideWithValue(
           AppThemeManager(
-              themeSettings: backThemeSettings,
+              state: backThemeSettings,
               dataStore: dataStore,
               side: FrontOrBackSide.back),
         ),

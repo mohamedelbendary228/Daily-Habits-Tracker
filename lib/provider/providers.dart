@@ -8,11 +8,11 @@ final dataStoreProvider = Provider<HiveDataStore>((ref) {
 });
 
 final frontThemeManagerProvider =
-    StateNotifierProvider<AppThemeManager, AppThemeSettings>((ref) {
+    StateNotifierProvider<AppThemeManager, AppThemeSettingsModel>((ref) {
   throw UnimplementedError();
 });
 
 final backThemeManagerProvider =
-    StateNotifierProvider<AppThemeManager, AppThemeSettings>((ref) {
+    StateNotifierProvider<AppThemeManager, AppThemeSettingsModel>((ref) {
   throw UnimplementedError();
 });

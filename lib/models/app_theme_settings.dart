@@ -6,7 +6,7 @@ import 'package:hive/hive.dart';
 part 'app_theme_settings.g.dart';
 
 @HiveType(typeId: 2)
-class AppThemeSettings {
+class AppThemeSettingsModel {
 // Index used to reference one of the colors in AppColors
   // Can range between 0 and AppColors.allColors.length - 1
   @HiveField(0)
@@ -17,20 +17,20 @@ class AppThemeSettings {
   @HiveField(1)
   final int variantIndex;
 
-  AppThemeSettings({required this.colorIndex, required this.variantIndex});
-  
-  factory AppThemeSettings.defaults(FrontOrBackSide side) {
-    return AppThemeSettings(
+  AppThemeSettingsModel({required this.colorIndex, required this.variantIndex});
+
+  factory AppThemeSettingsModel.defaults(FrontOrBackSide side) {
+    return AppThemeSettingsModel(
       colorIndex: 0,
       variantIndex: side == FrontOrBackSide.front ? 0 : 2,
     );
   }
 
-  AppThemeSettings copyWith({
+  AppThemeSettingsModel copyWith({
     int? colorIndex,
     int? variantIndex,
   }) {
-    return AppThemeSettings(
+    return AppThemeSettingsModel(
       colorIndex: colorIndex ?? this.colorIndex,
       variantIndex: variantIndex ?? this.variantIndex,
     );
