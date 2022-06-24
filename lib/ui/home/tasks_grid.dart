@@ -3,8 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:habit_tracker_flutter/models/task.dart';
 import 'package:habit_tracker_flutter/ui/animations/animation_controller_state.dart';
+import 'package:habit_tracker_flutter/ui/animations/opacity_animated_widget.dart';
 import 'package:habit_tracker_flutter/ui/animations/staggered_scale_animation_widget.dart';
 import 'package:habit_tracker_flutter/ui/common_widgets/edit_task_button.dart';
+import 'package:habit_tracker_flutter/ui/task/add_task_item.dart';
 import 'package:habit_tracker_flutter/ui/task/task_with_name_loader.dart';
 
 class TasksGrid extends StatefulWidget {
@@ -12,7 +14,7 @@ class TasksGrid extends StatefulWidget {
   const TasksGrid({Key? key, required this.tasks}) : super(key: key);
 
   @override
-  State<TasksGrid> createState() => TasksGridState(Duration(milliseconds: 500));
+  State<TasksGrid> createState() => TasksGridState(Duration(milliseconds: 400));
 }
 
 class TasksGridState extends AnimationControllerState<TasksGrid> {
@@ -36,7 +38,7 @@ class TasksGridState extends AnimationControllerState<TasksGrid> {
         final taskHeight = taskWidth / aspectRatio;
         final mainAxisSpacing =
             max((constraints.maxHeight - taskHeight * 3.3) / 2.0, 0.1);
-
+        final length = min(6, widget.tasks.length + 1);
         return GridView.builder(
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -44,8 +46,12 @@ class TasksGridState extends AnimationControllerState<TasksGrid> {
               crossAxisSpacing: crossAxisSpacing,
               mainAxisSpacing: mainAxisSpacing,
               childAspectRatio: aspectRatio),
-          itemCount: widget.tasks.length,
+          itemCount: length,
           itemBuilder: (context, index) {
+            if (index == widget.tasks.length) {
+              return OpacityAnimatedWidget(
+                  animation: animationController, child: AddTaskItem());
+            }
             final task = widget.tasks[index];
             return TaskWithNameLoader(
               task: task,
