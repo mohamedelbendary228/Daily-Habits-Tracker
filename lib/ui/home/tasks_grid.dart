@@ -12,7 +12,7 @@ class TasksGrid extends StatefulWidget {
   const TasksGrid({Key? key, required this.tasks}) : super(key: key);
 
   @override
-  State<TasksGrid> createState() => TasksGridState(Duration(milliseconds: 300));
+  State<TasksGrid> createState() => TasksGridState(Duration(milliseconds: 500));
 }
 
 class TasksGridState extends AnimationControllerState<TasksGrid> {
@@ -51,7 +51,10 @@ class TasksGridState extends AnimationControllerState<TasksGrid> {
               task: task,
               isEditing: false,
               editTaskButtonBuilder: (_) => StaggeredScaleAnimatedWidget(
-                  animation: animationController, child: EditTaskButton()),
+                animation: animationController,
+                index: index,
+                child: EditTaskButton(),
+              ),
             );
           },
         );

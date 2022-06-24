@@ -16,7 +16,7 @@ Future<void> main() async {
   final dataStore = HiveDataStore();
   await dataStore.init();
   await dataStore.createDemoTasks(
-    force: true,
+    force: false,
     frontTasks: [
       Task.create(name: 'Eat a Healthy Meal', iconName: AppAssets.carrot),
       Task.create(name: 'Walk the Dog', iconName: AppAssets.dog),
