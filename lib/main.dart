@@ -16,14 +16,14 @@ Future<void> main() async {
   final dataStore = HiveDataStore();
   await dataStore.init();
   await dataStore.createDemoTasks(
-    force: false,
+    force: true,
     frontTasks: [
       Task.create(name: 'Eat a Healthy Meal', iconName: AppAssets.carrot),
       Task.create(name: 'Walk the Dog', iconName: AppAssets.dog),
       Task.create(name: 'Do Some Coding', iconName: AppAssets.html),
       Task.create(name: 'Meditate', iconName: AppAssets.meditation),
       Task.create(name: 'Do 10 Pushups', iconName: AppAssets.pushups),
-      Task.create(name: 'Sleep 8 Hours', iconName: AppAssets.rest),
+      //Task.create(name: 'Sleep 8 Hours', iconName: AppAssets.rest),
     ],
     backTasks: [
       Task.create(name: 'Cycle to Work', iconName: AppAssets.bike),
@@ -31,7 +31,7 @@ Future<void> main() async {
       Task.create(name: 'Wear a Mask', iconName: AppAssets.mask),
       Task.create(name: 'Brush Your Teeth', iconName: AppAssets.toothbrush),
       Task.create(name: 'Floss Your Teeth', iconName: AppAssets.dentalFloss),
-      Task.create(name: 'Drink Water', iconName: AppAssets.water),
+      // Task.create(name: 'Drink Water', iconName: AppAssets.water),
     ],
    );
    final frontThemeSettings =

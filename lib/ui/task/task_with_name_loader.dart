@@ -8,7 +8,14 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 class TaskWithNameLoader extends ConsumerWidget {
   final Task task;
-  const TaskWithNameLoader({Key? key, required this.task}) : super(key: key);
+  final bool isEditing;
+  final WidgetBuilder? editTaskButtonBuilder;
+  const TaskWithNameLoader({
+    Key? key,
+    required this.task,
+    this.isEditing = false,
+    this.editTaskButtonBuilder,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,10 +26,12 @@ class TaskWithNameLoader extends ConsumerWidget {
         final taskState = dataStore.taskState(box, task: task);
         return TaskRingWithName(
           task: task,
+          isEditing: isEditing,
+          editTaskButtonBuilder: editTaskButtonBuilder,
           completed: taskState.completed,
-          onCompleted: (completed) {
-            ref.read(dataStoreProvider).setTaskState(task: task, completed: completed);
-          },
+          onCompleted: (completed) => ref
+              .read(dataStoreProvider)
+              .setTaskState(task: task, completed: completed),
         );
       },
     );

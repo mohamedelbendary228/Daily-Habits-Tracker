@@ -16,6 +16,7 @@ class TasksGridPage extends StatelessWidget {
   final VoidCallback? onFlip;
   final GlobalKey<SlidingPanelAnimatorState> leftAnimatorKey;
   final GlobalKey<SlidingPanelAnimatorState> rightAnimatorKey;
+  final GlobalKey<TasksGridState> gridKey;
   final AppThemeSettingsModel appThemeSettings;
   final ValueChanged<int>? onColorIndexSelected;
   final ValueChanged<int>? onVariantIndexSelected;
@@ -26,6 +27,7 @@ class TasksGridPage extends StatelessWidget {
     required this.leftAnimatorKey,
     required this.rightAnimatorKey,
     required this.appThemeSettings,
+    required this.gridKey,
     this.onColorIndexSelected,
     this.onVariantIndexSelected,
     this.onFlip,
@@ -34,13 +36,15 @@ class TasksGridPage extends StatelessWidget {
   void _enterEditMode() {
     leftAnimatorKey.currentState?.slidIn();
     rightAnimatorKey.currentState?.slidIn();
+    gridKey.currentState?.enterEditMode();
   }
 
   void _exitEditMode() {
     leftAnimatorKey.currentState?.slidOut();
     rightAnimatorKey.currentState?.slidOut();
+    gridKey.currentState?.exitEditMode();
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return AnimatedAppTheme(
@@ -55,6 +59,7 @@ class TasksGridPage extends StatelessWidget {
               child: Stack(
                 children: [
                   TasksGridContents(
+                    gridKey: gridKey,
                     tasks: tasks,
                     onFlip: onFlip,
                     onEnterEditMode: _enterEditMode,
@@ -101,9 +106,11 @@ class TasksGridContents extends StatelessWidget {
   final List<Task> tasks;
   final VoidCallback? onFlip;
   final VoidCallback? onEnterEditMode;
+  final GlobalKey<TasksGridState> gridKey;
   const TasksGridContents({
     Key? key,
     required this.tasks,
+    required this.gridKey,
     this.onFlip,
     this.onEnterEditMode,
   }) : super(key: key);
@@ -118,6 +125,7 @@ class TasksGridContents extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(horizontal: 24.0, vertical: 18.0),
             child: TasksGrid(
+              key: gridKey,
               tasks: tasks,
             ),
           ),

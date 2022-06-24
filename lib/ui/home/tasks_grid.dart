@@ -2,13 +2,29 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:habit_tracker_flutter/models/task.dart';
-import 'package:habit_tracker_flutter/models/task_preset.dart';
-import 'package:habit_tracker_flutter/ui/task/task_ring_with_name.dart';
+import 'package:habit_tracker_flutter/ui/animations/animation_controller_state.dart';
+import 'package:habit_tracker_flutter/ui/animations/staggered_scale_animation_widget.dart';
+import 'package:habit_tracker_flutter/ui/common_widgets/edit_task_button.dart';
 import 'package:habit_tracker_flutter/ui/task/task_with_name_loader.dart';
 
-class TasksGrid extends StatelessWidget {
+class TasksGrid extends StatefulWidget {
   final List<Task> tasks;
   const TasksGrid({Key? key, required this.tasks}) : super(key: key);
+
+  @override
+  State<TasksGrid> createState() => TasksGridState(Duration(milliseconds: 300));
+}
+
+class TasksGridState extends AnimationControllerState<TasksGrid> {
+  TasksGridState(Duration duration) : super(duration);
+
+  void enterEditMode() {
+    animationController.forward();
+  }
+
+  void exitEditMode() {
+    animationController.reverse();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +44,14 @@ class TasksGrid extends StatelessWidget {
               crossAxisSpacing: crossAxisSpacing,
               mainAxisSpacing: mainAxisSpacing,
               childAspectRatio: aspectRatio),
-          itemCount: tasks.length,
+          itemCount: widget.tasks.length,
           itemBuilder: (context, index) {
-            final task = tasks[index];
+            final task = widget.tasks[index];
             return TaskWithNameLoader(
               task: task,
+              isEditing: false,
+              editTaskButtonBuilder: (_) => StaggeredScaleAnimatedWidget(
+                  animation: animationController, child: EditTaskButton()),
             );
           },
         );

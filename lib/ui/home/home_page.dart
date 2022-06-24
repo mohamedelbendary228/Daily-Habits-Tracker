@@ -4,6 +4,7 @@ import 'package:habit_tracker_flutter/models/app_theme_settings.dart';
 import 'package:habit_tracker_flutter/models/task.dart';
 import 'package:habit_tracker_flutter/provider/providers.dart';
 import 'package:habit_tracker_flutter/ui/home/page_flip_builder.dart';
+import 'package:habit_tracker_flutter/ui/home/tasks_grid.dart';
 import 'package:habit_tracker_flutter/ui/home/tasks_grid_page.dart';
 import 'package:habit_tracker_flutter/ui/sliding_panel/sliding_panel_animator.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -23,6 +24,8 @@ class _HomePageState extends State<HomePage> {
       GlobalKey<SlidingPanelAnimatorState>();
   final _backSlidingPanelRightAnimatorKey =
       GlobalKey<SlidingPanelAnimatorState>();
+  final gridKey = GlobalKey<TasksGridState>();  
+ // final _backGridKey = GlobalKey<TasksGridState>();  
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +41,7 @@ class _HomePageState extends State<HomePage> {
             builder: (_, Box<Task> box, __) {
               return TasksGridPage(
                 key: ValueKey(1),
+                gridKey: gridKey,
                 appThemeSettings: frontProvider,
                 onColorIndexSelected: (colorIndex) => ref
                     .read(frontThemeManagerProvider.notifier)
@@ -57,6 +61,7 @@ class _HomePageState extends State<HomePage> {
             builder: (_, Box<Task> box, __) {
               return TasksGridPage(
                 key: ValueKey(2),
+                gridKey: gridKey,
                 appThemeSettings: backProvider,
                 onColorIndexSelected: (colorIndex) => ref
                     .read(backThemeManagerProvider.notifier)
