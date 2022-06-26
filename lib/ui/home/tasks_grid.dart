@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:habit_tracker_flutter/models/task.dart';
 import 'package:habit_tracker_flutter/ui/animations/animation_controller_state.dart';
-import 'package:habit_tracker_flutter/ui/animations/opacity_animated_widget.dart';
-import 'package:habit_tracker_flutter/ui/animations/staggered_scale_animation_widget.dart';
+import 'package:habit_tracker_flutter/ui/animations/cutom_fade_transition_widget.dart';
+import 'package:habit_tracker_flutter/ui/animations/staggered_scale_transition_widget.dart';
 import 'package:habit_tracker_flutter/ui/common_widgets/edit_task_button.dart';
 import 'package:habit_tracker_flutter/ui/task/add_task_item.dart';
 import 'package:habit_tracker_flutter/ui/task/task_with_name_loader.dart';
@@ -20,12 +20,16 @@ class TasksGrid extends StatefulWidget {
 class TasksGridState extends AnimationControllerState<TasksGrid> {
   TasksGridState(Duration duration) : super(duration);
 
+  bool _isEditing = false;
+
   void enterEditMode() {
     animationController.forward();
+    setState(() => _isEditing = true);
   }
 
   void exitEditMode() {
     animationController.reverse();
+    setState(() => _isEditing = false);
   }
 
   @override
@@ -49,14 +53,18 @@ class TasksGridState extends AnimationControllerState<TasksGrid> {
           itemCount: length,
           itemBuilder: (context, index) {
             if (index == widget.tasks.length) {
-              return OpacityAnimatedWidget(
-                  animation: animationController, child: AddTaskItem());
+              return CustomFadeTransition(
+                animation: animationController,
+                child: AddTaskItem(
+                  onCompleted: _isEditing ? () {} : null,
+                ),
+              );
             }
             final task = widget.tasks[index];
             return TaskWithNameLoader(
               task: task,
-              isEditing: false,
-              editTaskButtonBuilder: (_) => StaggeredScaleAnimatedWidget(
+              isEditing: _isEditing,
+              editTaskButtonBuilder: (_) => StaggeredScaleTransition(
                 animation: animationController,
                 index: index,
                 child: EditTaskButton(),

@@ -7,12 +7,15 @@ import 'package:habit_tracker_flutter/ui/theming/app_theme.dart';
 
 class AnimatedTaskRing extends StatefulWidget {
   final String iconName;
+  final bool isEditing;
   final bool completed;
   final ValueChanged<bool>? onCompleted;
+
   const AnimatedTaskRing({
     Key? key,
     required this.iconName,
     required this.completed,
+    this.isEditing = false,
     this.onCompleted,
   }) : super(key: key);
 
@@ -59,7 +62,8 @@ class _AnimatedTaskRingState
   }
 
   void _handleTapDown(TapDownDetails details) {
-    if (!widget.completed &&
+    if (!widget.isEditing &&
+        !widget.completed &&
         animationController.status != AnimationStatus.completed) {
       animationController.forward();
     } else if (!_showCheckIcon) {
@@ -69,7 +73,8 @@ class _AnimatedTaskRingState
   }
 
   void _handleTapCancel() {
-    if (animationController.status != AnimationStatus.completed) {
+    if (!widget.isEditing &&
+        animationController.status != AnimationStatus.completed) {
       animationController.reverse();
     }
   }

@@ -33,6 +33,7 @@ class TaskRingWithName extends StatelessWidget {
               AnimatedTaskRing(
                 iconName: task.iconName,
                 completed: completed,
+                isEditing: isEditing,
                 onCompleted: onCompleted,
               ),
               if (editTaskButtonBuilder != null)
