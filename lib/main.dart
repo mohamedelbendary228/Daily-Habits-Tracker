@@ -7,6 +7,7 @@ import 'package:habit_tracker_flutter/models/task.dart';
 import 'package:habit_tracker_flutter/persistence/hive_data_store.dart';
 import 'package:habit_tracker_flutter/provider/providers.dart';
 import 'package:habit_tracker_flutter/ui/home/home_page.dart';
+import 'package:habit_tracker_flutter/ui/onboarding/landing_page.dart';
 import 'package:habit_tracker_flutter/ui/theming/app_theme.dart';
 import 'package:habit_tracker_flutter/ui/theming/app_theme_manager.dart';
 
@@ -73,7 +74,7 @@ class MyApp extends StatelessWidget {
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
       ),
-      home: HomePage(),
+      home: LandingPage(),
     );
   }
 }

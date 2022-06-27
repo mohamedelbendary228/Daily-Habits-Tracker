@@ -6,11 +6,15 @@ import 'package:habit_tracker_flutter/models/task_state.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class HiveDataStore {
-  static const forntTasksBoxName = 'frontTasks';
+  static const frontTasksBoxName = 'frontTasks';
   static const backTasksBoxName = 'backTasks';
   static const taskStateBoxName = 'tasksState';
   static const frontAppThemeBoxName = 'frontAppTheme';
   static const backAppThemeBoxName = 'backAppTheme';
+  static const flagsBoxName = 'flags';
+  static const alwaysShowAddTaskKey = 'alwaysShowAddTask';
+  static const didAddFirstTaskKey = 'didAddFirstTask';
+
   static String taskStateKey(String key) => 'taskState/$key';
 
   Future<void> init() async {
@@ -21,11 +25,12 @@ class HiveDataStore {
     Hive.registerAdapter<AppThemeSettingsModel>(AppThemeSettingsModelAdapter());
     
     //open boxes
-    await Hive.openBox<Task>(forntTasksBoxName);
+    await Hive.openBox<Task>(frontTasksBoxName);
     await Hive.openBox<Task>(backTasksBoxName);
     await Hive.openBox<TaskState>(taskStateBoxName);
     await Hive.openBox<AppThemeSettingsModel>(frontAppThemeBoxName);
     await Hive.openBox<AppThemeSettingsModel>(backAppThemeBoxName);
+    await Hive.openBox<AppThemeSettingsModel>(flagsBoxName);
   }
 
   Future<void> createDemoTasks({
@@ -33,7 +38,7 @@ class HiveDataStore {
     required List<Task> backTasks,
     bool force = false,
   }) async {
-    final frontBox = Hive.box<Task>(forntTasksBoxName);
+    final frontBox = Hive.box<Task>(frontTasksBoxName);
     if (frontBox.isEmpty || force) {
       await frontBox.clear();
       await frontBox.addAll(frontTasks);
@@ -47,7 +52,7 @@ class HiveDataStore {
   }
 
   ValueListenable<Box<Task>> frontTasksListenable() {
-    return Hive.box<Task>(forntTasksBoxName).listenable();
+    return Hive.box<Task>(frontTasksBoxName).listenable();
   }
 
   ValueListenable<Box<Task>> backTasksListenable() {
@@ -93,4 +98,76 @@ class HiveDataStore {
     final settings = box.get(themeKey);
     return settings ?? AppThemeSettingsModel.defaults(side);
   }
+
+
+  // Save and delete tasks
+  Future<void> saveTask(Task task, FrontOrBackSide frontOrBackSide) async {
+    final boxName = frontOrBackSide == FrontOrBackSide.front
+        ? frontTasksBoxName
+        : backTasksBoxName;
+    final box = Hive.box<Task>(boxName);
+    if (box.values.isEmpty) {
+      await box.add(task);
+    } else {
+      final index = box.values
+          .toList()
+          .indexWhere((taskAtIndex) => taskAtIndex.id == task.id);
+      if (index >= 0) {
+        await box.putAt(index, task);
+      } else {
+        await box.add(task);
+      }
+    }
+  }
+
+  Future<void> deleteTask(Task task, FrontOrBackSide frontOrBackSide) async {
+    final boxName = frontOrBackSide == FrontOrBackSide.front
+        ? frontTasksBoxName
+        : backTasksBoxName;
+    final box = Hive.box<Task>(boxName);
+    if (box.isNotEmpty) {
+      final index = box.values
+          .toList()
+          .indexWhere((taskAtIndex) => taskAtIndex.id == task.id);
+      if (index >= 0) {
+        await box.deleteAt(index);
+      }
+    }
+  }
+
+  
+ // Did Add First Task
+  Future<void> setDidAddFirstTask(bool value) async {
+    final box = Hive.box<bool>(flagsBoxName);
+    await box.put(didAddFirstTaskKey, value);
+  }
+
+  ValueListenable<Box<bool>> didAddFirstTaskListenable() {
+    return Hive.box<bool>(flagsBoxName)
+        .listenable(keys: <String>[didAddFirstTaskKey]);
+  }
+
+  bool didAddFirstTask(Box<bool> box) {
+    final value = box.get(didAddFirstTaskKey);
+    return value ?? false;
+  }
+
+  // Always Show Add Task
+  Future<void> setAlwaysShowAddTask(bool value) async {
+    final box = Hive.box<bool>(flagsBoxName);
+    await box.put(alwaysShowAddTaskKey, value);
+  }
+
+  ValueListenable<Box<bool>> alwaysShowAddTaskListenable() {
+    return Hive.box<bool>(flagsBoxName)
+        .listenable(keys: <String>[alwaysShowAddTaskKey]);
+  }
+
+  bool alwaysShowAddTask(Box<bool> box) {
+    final value = box.get(alwaysShowAddTaskKey);
+    return value ?? true;
+  }
+  
+
+
 }

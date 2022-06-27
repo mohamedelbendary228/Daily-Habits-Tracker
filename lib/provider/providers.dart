@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:habit_tracker_flutter/models/app_theme_settings.dart';
+import 'package:habit_tracker_flutter/models/front_or_back_side.dart';
 import 'package:habit_tracker_flutter/persistence/hive_data_store.dart';
 import 'package:habit_tracker_flutter/ui/theming/app_theme_manager.dart';
 
@@ -16,3 +17,9 @@ final backThemeManagerProvider =
     StateNotifierProvider<AppThemeManager, AppThemeSettingsModel>((ref) {
   throw UnimplementedError();
 });
+
+final frontOrBackSideProvider = Provider<FrontOrBackSide>((_) {
+  throw UnimplementedError();
+});
+
+

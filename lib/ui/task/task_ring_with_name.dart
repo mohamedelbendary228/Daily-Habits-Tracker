@@ -10,6 +10,7 @@ class TaskRingWithName extends StatelessWidget {
   final bool completed;
   final ValueChanged<bool>? onCompleted;
   final bool isEditing;
+  final bool hasCompletedState;
   final WidgetBuilder? editTaskButtonBuilder;
 
   const TaskRingWithName({
@@ -17,6 +18,7 @@ class TaskRingWithName extends StatelessWidget {
     required this.task,
     this.completed = false,
     this.isEditing = false,
+    this.hasCompletedState = false,
     this.editTaskButtonBuilder,
     this.onCompleted,
   }) : super(key: key);
