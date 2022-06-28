@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:habit_tracker_flutter/models/app_theme_settings.dart';
 import 'package:habit_tracker_flutter/models/task.dart';
 import 'package:habit_tracker_flutter/provider/providers.dart';
-import 'package:habit_tracker_flutter/ui/home/page_flip_builder.dart';
 import 'package:habit_tracker_flutter/ui/home/tasks_grid.dart';
 import 'package:habit_tracker_flutter/ui/home/tasks_grid_page.dart';
 import 'package:habit_tracker_flutter/ui/sliding_panel/sliding_panel_animator.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:page_flip_builder/page_flip_builder.dart';
 
 import '../../models/front_or_back_side.dart';
 
