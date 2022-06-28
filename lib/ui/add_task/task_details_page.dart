@@ -154,49 +154,45 @@ class _ConfirmTaskContentsState extends ConsumerState<ConfirmTaskContents> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        // * Make content scrollable if needed
-        SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(height: 32),
-              ConfirmTaskHeader(
-                iconName: _iconName,
-                onChangeIcon: _changeIcon,
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height - 100,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(height: 32),
+            ConfirmTaskHeader(
+              iconName: _iconName,
+              onChangeIcon: _changeIcon,
+            ),
+            SizedBox(height: 48),
+            TextFieldHeader('TITLE:'),
+            CustomTextField(
+              key: _textFieldKey,
+              initialValue: widget.task.name,
+              hintText: 'Enter task title...',
+            ),
+            if (!widget.isNewTask) ...[
+              Container(height: 48),
+              TaskPresetListTile(
+                taskPreset:
+                    TaskPreset(name: 'Delete Task', iconName: AppAssets.delete),
+                showChevron: false,
+                onPressed: (_) => _deleteTask(),
               ),
-              SizedBox(height: 48),
-              TextFieldHeader('TITLE:'),
-              CustomTextField(
-                key: _textFieldKey,
-                initialValue: widget.task.name,
-                hintText: 'Enter task title...',
-              ),
-              if (!widget.isNewTask) ...[
-                Container(height: 48),
-                TaskPresetListTile(
-                  taskPreset: TaskPreset(
-                      name: 'Delete Task', iconName: AppAssets.delete),
-                  showChevron: false,
-                  onPressed: (_) => _deleteTask(),
-                ),
-              ],
             ],
-          ),
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: PrimaryButton(
+                title: widget.isNewTask ? 'SAVE TASK' : 'DONE',
+                onPressed: _saveTask,
+              ),
+            ),
+            SizedBox(height: 24.0),
+          ],
         ),
-        // * Pin PrimaryButton to the bottom
-        Spacer(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: PrimaryButton(
-            title: widget.isNewTask ? 'SAVE TASK' : 'DONE',
-            onPressed: _saveTask,
-          ),
-        ),
-        SizedBox(height: 24.0),
-      ],
+      ),
     );
   }
 }

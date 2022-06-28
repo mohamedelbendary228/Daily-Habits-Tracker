@@ -22,7 +22,7 @@ class AppThemeSettingsModel {
   factory AppThemeSettingsModel.defaults(FrontOrBackSide side) {
     return AppThemeSettingsModel(
       colorIndex: 0,
-      variantIndex: side == FrontOrBackSide.front ? 0 : 2,
+      variantIndex: side == FrontOrBackSide.front ? 0 : 0,
     );
   }
 

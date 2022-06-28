@@ -98,7 +98,7 @@ class TasksGridState extends AnimationControllerState<TasksGrid> {
             max((constraints.maxHeight - taskHeight * 3.3) / 2.0, 0.1);
         final length = min(6, widget.tasks.length + 1);
         return GridView.builder(
-          physics: const NeverScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: crossAxisSpacing,
